@@ -3,6 +3,7 @@ import pygame
 import random
 import sys
 
+l = []
 
 pygame.init()
 screen = pygame.display.set_mode((1000, 600))
@@ -10,6 +11,9 @@ screen = pygame.display.set_mode((1000, 600))
 pygame.draw.rect(screen, (255, 255, 255), (0, 0, 1000, 600))
 pygame.display.update()
 pygame.display.set_caption("Reaction Test")
+
+for k in range(100, 500):
+    l += [k/100]
 
 def start_btn():
     pygame.draw.rect(screen, (255, 0, 0), (750, 50, 200, 100))
