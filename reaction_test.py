@@ -21,6 +21,7 @@ def start_btn():
 
 
 def lights():
+    pygame.event.set_blocked(pygame.MOUSEBUTTONDOWN)
     for i in range(0, 600, 200):
         pygame.draw.circle(screen, (255, 0, 0), (125+i, 150), 70)
         pygame.draw.circle(screen, (255, 0, 0), (125+i, 300), 70)
@@ -32,6 +33,8 @@ def lights():
     draw_board()
     global start
     start = t.perf_counter()
+    
+    
   
     
 def draw_board():
@@ -64,8 +67,9 @@ while True:
             lights()
             print(event.pos)
             turn += 1
+            pygame.event.set_allowed(pygame.MOUSEBUTTONDOWN)
             
-        elif event.type == pygame.MOUSEBUTTONDOWN and turn == 1:    
+        elif event.type == pygame.MOUSEBUTTONDOWN and turn == 1:
             if pxarray[538, 322] == screen.map_rgb(255, 0, 0):
                 print("JUMPSTART!")
                 pygame.event.clear()
