@@ -54,7 +54,6 @@ while True:
             sys.exit()
     
         if event.type == pygame.MOUSEBUTTONDOWN and turn == 0 and len(l1) == 0:
-            print(event.pos)
             pygame.draw.rect(screen, (255, 255, 255), (0, 500, 1000, 1000))
             lights()
             pygame.event.clear()
