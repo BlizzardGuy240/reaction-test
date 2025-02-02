@@ -6,22 +6,19 @@ import sys
 l = []
 
 pygame.init()
-screen = pygame.display.set_mode((1000, 600))
+screen = pygame.display.set_mode((650, 700))
 
-pygame.draw.rect(screen, (255, 255, 255), (0, 0, 1000, 600))
+pygame.draw.rect(screen, (255, 255, 255), (0, 0, 650, 700)) #1000, 600
 pygame.display.update()
 pygame.display.set_caption("Reaction Test")
 
 for k in range(100, 500):
     l += [k/100]
 
-def start_btn():
-    pygame.draw.rect(screen, (255, 0, 0), (750, 50, 200, 100))
-    pygame.display.update()
 
 
 def lights():
-    pygame.event.set_blocked(pygame.MOUSEBUTTONDOWN)
+    draw_board()
     for i in range(0, 600, 200):
         pygame.draw.circle(screen, (255, 0, 0), (125+i, 150), 70)
         pygame.draw.circle(screen, (255, 0, 0), (125+i, 300), 70)
@@ -33,9 +30,10 @@ def lights():
     draw_board()
     global start
     start = t.perf_counter()
+    global turn
+    turn += 1
     
-    
-  
+
     
 def draw_board():
     for i in range(0, 600, 200):
@@ -45,16 +43,13 @@ def draw_board():
             pygame.draw.circle(screen, (0, 0, 0), (125+i, j), 70)
     pygame.display.update()
 
-def reset():
-    start_btn()
-    draw_board()
 
 
 draw_board()
-start_btn()
+l1 = []
+l2 = []
 
 
-pxarray = pygame.PixelArray(screen)
 turn = 0
 
 while True:
@@ -63,20 +58,30 @@ while True:
         if event.type == pygame.QUIT:
             sys.exit()
     
-        if event.type == pygame.MOUSEBUTTONDOWN and turn == 0:
-            lights()
+        if event.type == pygame.MOUSEBUTTONDOWN and turn == 0 and len(l1) == 0:
             print(event.pos)
-            turn += 1
-            pygame.event.set_allowed(pygame.MOUSEBUTTONDOWN)
+            pygame.draw.rect(screen, (255, 255, 255), (0, 500, 1000, 1000))
+            lights()
+            pygame.event.clear()
+            l1 += [1]
+            # if event.type == pygame.MOUSEBUTTONDOWN and turn == 1 and len(l1) == 1:
+            #     print("jumpstart")
+            #     pygame.event.clear()
+            #     del l1[0]
+            #     break
             
-        elif event.type == pygame.MOUSEBUTTONDOWN and turn == 1:
-            if pxarray[538, 322] == screen.map_rgb(255, 0, 0):
-                print("JUMPSTART!")
-                pygame.event.clear()
-            else:
-                end = t.perf_counter()
-                print(end - start)
+            
+        elif event.type == pygame.MOUSEBUTTONDOWN and turn == 1 and len(l1) == 1:
+            del l1[0]
+            global end
+            end = t.perf_counter()
+            a = (end - start)
+            print(a)
+            time = pygame.font.SysFont("freesansbold.ttf", 100).render(str("{:.2f}".format(a*1000)) + 'ms', 1, (0, 0, 0))
+            screen.blit(time, (175, 580))
+            pygame.display.update()
             turn -= 1
+            l2 += ["{:.2f}".format(a*1000)]
 
 
 
